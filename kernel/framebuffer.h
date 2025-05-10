@@ -3,10 +3,19 @@
 
 #include <kernel/types.h>
 
-#define FRAMEBUFFER_WIDTH 80
-#define FRAMEBUFFER_HEIGHT 25
+#pragma pack(push, 1)
+typedef struct {
+  void* addr;
+  u32 pitch;
+  u32 width;
+  u32 height;
+  u8 bpp;
+  u8 type;
+  u8 reserved;
+} Framebuffer;
+#pragma pack(pop)
 
-extern u16* framebuffer_memory;
+extern Framebuffer framebuffer;
 
 typedef enum  {
   FRAMEBUFFER_COLOR_BLACK = 0,

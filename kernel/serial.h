@@ -13,6 +13,9 @@
 #define SERIAL_COM8 0x4E8
 
 void serial_write(u16 com, const char* text);
+void serial_write_u32(u16 com, u32 value);
+void serial_write_u64(u16 com, u64 value);
+void serial_write_addr(u16 com, void* value);
 
 #endif
 

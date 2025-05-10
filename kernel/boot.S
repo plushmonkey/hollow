@@ -3,6 +3,7 @@ global _start
 
 extern kmain
 extern _kernel_physical_end
+extern framebuffer_memory
 
 KERNEL_STACK_SIZE equ 4096
 KERNEL_PHYSICAL_START equ 0x0000000000400000
@@ -142,10 +143,14 @@ high_page_directory_table:
 align 4
 kernel_stack:
   resb KERNEL_STACK_SIZE
+align 4
+mbi:
+  resb 4
 
 section .text
 align 4
 _start:
+  mov [mbi], ebx
   mov esp, kernel_stack + KERNEL_STACK_SIZE
 
   ; setup the page tables
@@ -211,7 +216,9 @@ _start64:
   mov fs, ax
   mov gs, ax
   mov ss, ax
-
+  
+  mov rdi, [mbi]
+  
   call kmain
 
 .loop:

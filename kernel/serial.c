@@ -84,3 +84,72 @@ void serial_write(u16 com, const char* text) {
   }
 }
 
+void serial_write_u32(u16 com, u32 value) {
+  char output[12] = {'0', 0};
+  int count = 0;
+  
+  u32 divisor = 1000000000;
+  
+  while (divisor > 0) {
+    u32 digit = value / divisor;
+    
+    value %= divisor;
+    divisor /= 10;
+    
+    if (count > 0 || digit != 0) {
+      output[count++] = '0' + digit;
+    }
+  }
+  
+  if (count == 0) ++count;
+  output[count] = '\n';
+  
+  serial_write(com, output);
+}
+
+void serial_write_u64(u16 com, u64 value) {
+  char output[24] = {'0', 0};
+  int count = 0;
+  
+  u64 divisor = 10000000000000000000ULL;
+  
+  while (divisor > 0) {
+    u64 digit = value / divisor;
+    
+    value %= divisor;
+    divisor /= 10;
+    
+    if (count > 0 || digit != 0) {
+      output[count++] = '0' + digit;
+    }
+  }
+  
+  if (count == 0) ++count;
+  output[count] = '\n';
+  
+  serial_write(com, output);
+}
+
+void serial_write_addr(u16 com, void* addr) {
+  const char* digits = "0123456789abcdef";
+  char output[24] = {'0', 'x', '0', 0};
+  int count = 2;
+  
+  u32 shift = 0;
+  u64 value = (u64)addr;
+  
+  while (shift < 64) {
+    u8 digit = (value >> shift) & 0x0F;
+    
+    char c = digits[digit];      
+    output[count++] = c;
+    
+    shift += 4;
+  }
+  
+  if (count == 2) ++count;
+  output[count] = '\n';
+  output[count + 1] = 0;
+  
+  serial_write(com, output);
+}

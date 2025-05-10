@@ -7,26 +7,28 @@
 #define FB_HIGH_BYTE_COMMAND 14
 #define FB_LOW_BYTE_COMMAND 15
 
-u16* framebuffer_memory = (u16*)0xB8000;
+// TODO: This was written for old framebuffer given by BIOS. Needs to be rewritten for UEFI
+
+Framebuffer framebuffer;
 
 void framebuffer_put(u8 x, u8 y, FramebufferColor fg, FramebufferColor bg, char c) {
-  if (x >= FRAMEBUFFER_WIDTH) return;
-  if (y >= FRAMEBUFFER_HEIGHT) return;
+  if (x >= framebuffer.width) return;
+  if (y >= framebuffer.height) return;
 
-  u16* mem = framebuffer_memory + (y * FRAMEBUFFER_WIDTH) + x;
+  u16* mem = ((u16*)framebuffer.addr) + (y * framebuffer.pitch) + x;
   u16 val = c | ((((bg & 0x0F) << 4) | (fg & 0x0F)) << 8);
 
   *mem = val;
 }
 
 void framebuffer_clear() {
-  for (int i = 0; i < FRAMEBUFFER_WIDTH * FRAMEBUFFER_HEIGHT; ++i) {
-    framebuffer_memory[i] = 0;
+  for (u32 i = 0; i < framebuffer.width * framebuffer.height; ++i) {
+    ((u16*)framebuffer.addr)[i] = 0;
   }
 }
 
 void framebuffer_move_cursor(u8 x, u8 y) {
-  u16 val = ((u16)y * FRAMEBUFFER_WIDTH) + (u16)x;
+  u16 val = ((u16)y * framebuffer.width) + (u16)x;
 
   outb(FB_COMMAND_PORT, FB_HIGH_BYTE_COMMAND);
   outb(FB_DATA_PORT, (val >> 8) & 0xFF);
@@ -56,13 +58,13 @@ void framebuffer_writer_write(FramebufferWriter* writer, const char* text) {
       writer->x++;
     }
 
-    if (writer->x >= FRAMEBUFFER_WIDTH) {
+    if (writer->x >= framebuffer.width) {
       writer->x = 0;
       writer->y++;
     }
 
-    if (writer->y >= FRAMEBUFFER_HEIGHT) {
-      writer->y = FRAMEBUFFER_HEIGHT - 1;
+    if (writer->y >= framebuffer.height) {
+      writer->y = framebuffer.height - 1;
     }
 
     ++text;
