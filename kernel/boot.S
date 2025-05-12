@@ -98,7 +98,7 @@ header_start:
   dw 5
   dw 0
   dd 20
-  dd 1366
+  dd 1360
   dd 768
   dd 32
   
@@ -120,6 +120,7 @@ gdt_ptr:
   dd gdt_table ; ptr to table
 
 section .bss
+global pml4
 align PML4_ALIGNMENT
 pml4:
   resb PML4_SIZE
@@ -223,3 +224,9 @@ _start64:
 
 .loop:
   jmp .loop
+  
+global halt
+align 4
+halt:
+  cli
+  hlt

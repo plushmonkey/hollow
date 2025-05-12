@@ -17,38 +17,8 @@ typedef struct {
 
 extern Framebuffer framebuffer;
 
-typedef enum  {
-  FRAMEBUFFER_COLOR_BLACK = 0,
-  FRAMEBUFFER_COLOR_BLUE = 1,
-  FRAMEBUFFER_COLOR_GREEN = 2,
-  FRAMEBUFFER_COLOR_CYAN = 3,
-  FRAMEBUFFER_COLOR_RED = 4,
-  FRAMEBUFFER_COLOR_MAGENTA = 5,
-  FRAMEBUFFER_COLOR_BROWN = 6,
-  FRAMEBUFFER_COLOR_LIGHT_GRAY = 7,
-  FRAMEBUFFER_COLOR_DARK_GRAY = 8,
-  FRAMEBUFFER_COLOR_LIGHT_BLUE = 9,
-  FRAMEBUFFER_COLOR_LIGHT_GREEN = 10,
-  FRAMEBUFFER_COLOR_LIGHT_CYAN = 11,
-  FRAMEBUFFER_COLOR_LIGHT_RED = 12,
-  FRAMEBUFFER_COLOR_LIGHT_MAGENTA = 13,
-  FRAMEBUFFER_COLOR_LIGHT_BROWN = 14,
-  FRAMEBUFFER_COLOR_WHITE = 15,
-} FramebufferColor;
-
-void framebuffer_put(u8 x, u8 y, FramebufferColor fg, FramebufferColor bg, char c);
-void framebuffer_clear();
-void framebuffer_move_cursor(u8 x, u8 y);
-
-typedef struct {
-  u8 x;
-  u8 y;
-  FramebufferColor fg;
-  FramebufferColor bg;
-} FramebufferWriter;
-
-FramebufferWriter framebuffer_writer_create(FramebufferColor fg, FramebufferColor bg);
-void framebuffer_writer_write(FramebufferWriter* writer, const char* text);
+void framebuffer_clear(u32 color);
+void framebuffer_setpixel(u32 x, u32 y, u32 color);
+void framebuffer_draw_line(u32 x0, u32 y0, u32 x1, u32 y1, u32 color);
 
 #endif
-

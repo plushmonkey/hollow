@@ -2,7 +2,7 @@ BUILD_DIR = build
 
 CC = clang
 INCLUDES = -I..
-CFLAGS = -m64 -mno-sse -O2 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nodefaultlibs -fno-exceptions -fno-unwind-tables -MMD -mno-red-zone -mcmodel=kernel -fno-pie -Wall -Wextra -Werror -static $(INCLUDES) -c
+CFLAGS = -m64 -mno-sse -O2 -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nodefaultlibs -fno-exceptions -fno-unwind-tables -MMD -mno-red-zone -mcmodel=kernel -fno-pie -Wall -Wextra -Werror -Wno-unused-variable -static $(INCLUDES) -c
 
 AS = nasm
 ASFLAGS = -f elf64
