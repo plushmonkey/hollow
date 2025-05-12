@@ -139,7 +139,7 @@ void serial_write_addr(u16 com, void* addr) {
   u64 value = (u64)addr;
   
   while (shift < 64) {
-    u8 digit = (value >> shift) & 0x0F;
+    u8 digit = (value >> (60 - shift)) & 0x0F;
     
     char c = digits[digit];      
     output[count++] = c;

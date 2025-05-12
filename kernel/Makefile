@@ -10,7 +10,7 @@ ASFLAGS = -f elf64
 LD = ld
 LDFLAGS = -T link.ld -melf_x86_64 -z max-page-size=0x1000 -z noexecstack
 
-OBJS = boot.o kmain.o framebuffer.o io.o serial.o
+OBJS = boot.o kmain.o framebuffer.o io.o serial.o idt.o
 LINK_OBJS = $(OBJS:%=$(BUILD_DIR)/%)
 
 all: kernel

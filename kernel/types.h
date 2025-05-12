@@ -11,5 +11,10 @@ typedef unsigned short u16;
 typedef unsigned int u32;
 typedef unsigned long long u64;
 
+typedef u64 size_t;
+typedef u64 uintptr_t;
+
+#define HOLLOW_ARRAY_COUNT(arr) (sizeof(arr) / sizeof(*arr))
+
 #endif
 
